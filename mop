@@ -30,7 +30,7 @@ Sub SumPaymentTypesWithInvoice()
     	InvoiceNumber = wsData.Cells(i, "D").Value ' Assuming invoice number is in column D
 	 
     	' Check if the payment type is one of the desired types or if it's "CHECK"
-    	If PaymentType = "CASH" Or PaymentType = "MASTERCARD" Or PaymentType = "VISA" Or PaymentType = "CHECK" Then
+    	If PaymentType = "CASH" Or PaymentType = "MASTERCARD" Or PaymentType = "VISA" Or PaymentType = "CHECK" Or PaymentType = "AMEX" Then
         	' Check if the invoice number is not in the collection (i.e., it's unique)
         	If Not Contains(InvoiceNumbers, InvoiceNumber) Then
             	' Add the invoice number to the collection
