@@ -1,0 +1,49 @@
+Private Sub btnVerifyFuel_Click()
+    Dim ws As Worksheet
+    Dim LastRow As Long
+    Dim i As Long
+    Dim FuelType As String
+    Dim Amount As Double
+    Dim Gallons As Double
+    Dim ExpectedAmount As Double
+    Dim Tolerance As Double
+
+    ' Set the worksheet
+    Set ws = ThisWorkbook.Sheets("Sheet1")
+
+    ' Define tolerance (0.15 cents)
+    Tolerance = 0.15
+
+    ' Find the last row with data in Column C
+    LastRow = ws.Cells(ws.Rows.Count, "C").End(xlUp).Row
+
+    ' Loop through the rows in the data
+    For i = 2 To LastRow ' Assuming data starts from row 2
+
+        ' Get fuel type, amount, and gallons
+        FuelType = ws.Cells(i, "C").Value
+        Amount = ws.Cells(i, "E").Value
+        Gallons = ws.Cells(i, "F").Value
+
+        ' Calculate the expected amount based on the fuel type
+        If FuelType = "REC" Then
+            ExpectedAmount = 5.65 * Gallons
+        ElseIf FuelType = "AV" Then
+            ExpectedAmount = 6.50 * Gallons
+        Else
+            ' Unknown fuel type, skip
+            GoTo NextRow
+        End If
+
+        ' Check if the actual amount is within the tolerance
+        If Abs(Amount - ExpectedAmount) > Tolerance Then
+            ' Highlight the amount cell in yellow
+            ws.Cells(i, "E").Interior.Color = RGB(255, 255, 0)
+        End If
+
+NextRow:
+    Next i
+    
+    ' Exit the sub when done
+    Exit Sub
+End Sub
