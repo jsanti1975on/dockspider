@@ -1,0 +1,54 @@
+@echo off
+
+REM Define the log file path and name
+set "logFile=%~dp0\TenantUpdateLog.txt"
+
+REM Initialize or clear the log file
+echo. > "%logFile%"
+
+REM Function to log messages to the log file
+:Log
+echo [%date% %time%] %* >> "%logFile%"
+exit /b
+
+REM Error handling and logging
+:ErrorHandling
+call :Log Error: %*
+goto :EOF
+
+REM Open Microsoft Excel
+start excel.exe
+if errorlevel 1 call :ErrorHandling Failed to open Microsoft Excel.
+
+REM Open Google Docs spreadsheet in your default web browser
+start "" "https://docs.google.com/spreadsheets"
+if errorlevel 1 call :ErrorHandling Failed to open Google Docs spreadsheet.
+
+REM Open the raw GitHub user content page in your default web browser
+start "" "https://raw.githubusercontent.com/jsanti1975on/dockspider/main/marinamaster"
+if errorlevel 1 call :ErrorHandling Failed to open GitHub user content page.
+
+REM List best practices for using the task scheduler & .bat files
+:ListBestPractices
+call :Log Organize script files and use descriptive and consistent file names
+call :Log 1. Create and maintain documentation for scheduled task & .bat files
+call :Log 2. Add metadata information at the beginning of your script
+call :Log 3. Avoid hardcoding sensitive information like passwords directly into your scripts.
+call :Log 4. Clearly document the dependencies and system prerequisites required for your scripts to run successfully.
+call :Log 5. Establish backup procedures for your script files
+call :Log 6. Implement error handling and logging in your scripts to track execution and troubleshoot issues
+call :Log 7. Thoroughly test your scripts in a staging environment that resembles the production environment.
+call :Log 8. Manage permissions and access control for your script files and directories.
+call :Log 9. Use descriptive and meaningful names for your scheduled tasks in the Task Scheduler
+
+
+REM Successful completion message
+echo Script completed successfully. >> "%logFile%"
+
+REM Pause to keep the console window open for a moment
+pause
+
+REM End of script
+exit /b
+
+
