@@ -21,11 +21,11 @@ start excel.exe
 if errorlevel 1 call :ErrorHandling Failed to open Microsoft Excel.
 
 REM Open Google Docs spreadsheet in your default web browser
-start "" "https://docs.google.com/spreadsheets"
+start "https://docs.google.com/spreadsheets"
 if errorlevel 1 call :ErrorHandling Failed to open Google Docs spreadsheet.
 
 REM Open the raw GitHub user content page in your default web browser
-start "" "https://raw.githubusercontent.com/jsanti1975on/dockspider/main/marinamaster"
+start "https://raw.githubusercontent.com/jsanti1975on/dockspider/main/marinamaster"
 if errorlevel 1 call :ErrorHandling Failed to open GitHub user content page.
 
 REM List best practices for using the task scheduler & .bat files
