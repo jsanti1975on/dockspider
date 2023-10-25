@@ -1,3 +1,6 @@
+REM Testing in home lab virtual environment
+
+
 @echo off
 
 REM Define the log file path and name
