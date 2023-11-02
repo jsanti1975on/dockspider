@@ -1,0 +1,47 @@
+Sub CalculateSalesTax()
+    Dim wsInput As Worksheet
+    Dim wsOutput As Worksheet
+    Dim LastRow As Long
+    Dim SalesTaxRate As Double
+    Dim TaxExemptProduct As String
+    Dim i As Long
+    
+    ' Set your worksheets
+    Set wsInput = ThisWorkbook.Sheets("Sheet1")
+    Set wsOutput = ThisWorkbook.Sheets("Sheet2")
+    
+    ' Set the sales tax rate (7%)
+    SalesTaxRate = 0.07
+    
+    ' Set the tax-exempt product name
+    TaxExemptProduct = "PRIVATE"
+    
+    ' Find the last row in the input sheet
+    LastRow = wsInput.Cells(wsInput.Rows.Count, "F").End(xlUp).Row
+    
+    ' Clear previous data in the output sheet
+    wsOutput.Cells.Clear
+    
+    ' Set headers for the output sheet
+    wsOutput.Cells(1, 1).Value = "Product"
+    wsOutput.Cells(1, 8).Value = "Price"
+    
+    ' Loop through the input data
+    For i = 2 To LastRow ' Assuming headers are in row 1
+        Dim ProductName As String
+        Dim ProductPrice As Double
+        
+        ProductName = wsInput.Cells(i, 6).Value
+        ProductPrice = wsInput.Cells(i, 8).Value
+        
+        ' Check if the product is tax-exempt
+        If UCase(ProductName) = UCase(TaxExemptProduct) Then
+            wsOutput.Cells(i, 1).Value = ProductName
+            wsOutput.Cells(i, 8).Value = ProductPrice
+        Else
+            ' Apply 7% sales tax
+            wsOutput.Cells(i, 1).Value = ProductName
+            wsOutput.Cells(i, 8).Value = ProductPrice + (ProductPrice * SalesTaxRate)
+        End If
+    Next i
+End Sub
