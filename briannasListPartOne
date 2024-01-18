@@ -1,0 +1,35 @@
+Sub OrganizeData()
+    Dim ws As Worksheet
+    Dim outputWs As Worksheet
+    Dim lastRow As Long
+    Dim i As Long
+    Dim targetRow As Long
+    
+    ' Set the working sheet
+    Set ws = ActiveSheet
+    
+    ' Add a new sheet for output
+    Set outputWs = Worksheets.Add
+    outputWs.Name = "tenant_list"
+    
+    ' Find the last row in column A
+    lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+    
+    ' Loop through each row in column A
+    For i = 1 To lastRow
+        ' Check if the row is not blank
+        If Trim(ws.Cells(i, 1).Value) <> "" Then
+            ' Get the target row from Column B
+            targetRow = ws.Cells(i, 2).Value
+            
+            ' Check if targetRow is within the valid range
+            If targetRow >= 1 And targetRow <= 80 Then
+                ' Copy data to the new sheet at the specified row
+                ws.Rows(i).Copy Destination:=outputWs.Rows(targetRow)
+            Else
+                ' If the number in Column B is out of range, mark as "OPEN"
+                outputWs.Rows(i).Value = "OPEN"
+            End If
+        End If
+    Next i
+End Sub
