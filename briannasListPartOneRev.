@@ -46,3 +46,44 @@ Sub OrganizeData()
         End If
     Next i
 End Sub
+
+// Caution below not for copy and paste 
+//  Add a call to another macro at the end of existing Sub (OrganizeData) 
+
+Sub OrganizeData()
+'... (the existing code)
+
+' Call the additional macro for handling "OPEN" and "COMMERCIAL"
+Call HandleOpenAndCommercial
+
+End Sub 
+
+Sub HandleOpenAndCommercial()
+    Dim outputWs as Worksheet
+    Dim lastRow As Long 
+    Dim i As Long
+
+    ' Set the output (tenant_list)
+Set outputWs = Worksheet("tenant_list")
+
+    ' Find the last row column A of the output sheet
+lastRow = outputWs.Cells(outputWs.Rows.Count, "A").End(xlUp).Row 
+
+' Loop through each row in column A of the output sheet
+For i = 1 To lastRow
+        ' Check if the cell is blank
+        If outputWs.Cells(i, 1).Value = "" Then
+            ' Enter "OPEN" into blank cells
+            outputWs.Cells(i, 1).Value = "OPEN"
+        End If
+
+        ' Assuming column D contains the commercial information, adjust as needed
+        If outputWs.Cells(i, 4).Value = "COMMERCIAL" Then
+            ' Do something for commercial entries
+        End If
+    Next i
+End Sub
+
+
+
+
