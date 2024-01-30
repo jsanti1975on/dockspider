@@ -1,0 +1,75 @@
+function jasCalculateAggregateAverages() {
+  var inputSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('input');
+  var outputSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('output');
+  var inputData = inputSheet.getRange('A2:H100').getValues(); // Assuming data from A2 to H100
+
+  // Get data from the 'input' sheet
+  var inputData = inputSheet.getDataRange().getValues();
+
+  // Create an object to store aggregated data based on SKU
+  var skuData = {};
+
+  // Loop through the input data
+  for (var i = 1; i < inputData.length; i++) { // Start from 1 to skip the header row
+    var sku = inputData[i][1]; // Assuming SKU is in column B
+    var qty = inputData[i][6]; // Assuming QTY is in column G
+    var cost = inputData[i][7]; // Assuming Cost is in column H
+    var totalFormulaResult = inputData[i][5]; // Assuming the formula result is in column F
+
+    if (!skuData[sku]) {
+      skuData[sku] = { qty: qty, totalCost: cost, totalFormulaResult: totalFormulaResult, count: 1 };
+    } else {
+      skuData[sku].qty += qty;
+      skuData[sku].totalCost += cost;
+      skuData[sku].totalFormulaResult += totalFormulaResult;
+      skuData[sku].count++;
+    }
+  }
+
+  // Write aggregated data to the 'output' sheet
+  var outputData = [['SKU', 'QTY', 'Average Cost', 'Total Formula Result']];
+  for (var sku in skuData) {
+    var avgCost = skuData[sku].totalCost / skuData[sku].count;
+    outputData.push([sku, skuData[sku].qty, avgCost, skuData[sku].totalFormulaResult]);
+  }
+  outputSheet.getRange(1, 1, outputData.length, 4).setValues(outputData);
+
+  // Delay for 4 seconds
+  Utilities.sleep(4000);
+
+  // Check for discrepancies in columns E, F, and H
+  for (var row = 2; row <= 24; row++) {
+    var cValue = inputSheet.getRange(row, 3).getValue(); // Value in column C
+    var eValue = inputSheet.getRange(row, 5).getValue(); // Value in column E
+    var fValue = inputSheet.getRange(row, 6).getValue(); // Value in column F
+    var hValue = inputSheet.getRange(row, 8).getValue(); // Value in column H
+
+    // Check for discrepancy
+    if ((cValue * eValue) / fValue !== hValue) {
+      // Discrepancy found, fill cell in column I with red
+      inputSheet.getRange(row, 9).setBackground('#FF0000'); // Red fill color
+    } else {
+      // No discrepancy, fill cell in column I with green
+      inputSheet.getRange(row, 9).setBackground('#00FF00'); // Green fill color
+    }
+  }
+
+  // Add digital signature to column D starting from row 2
+  var signatureText = "JAS.DIGITAL.TOOLS";
+  var signatureRange = inputSheet.getRange(2, 4, 1, 1); // Assuming digital signature in column D, row 2
+  signatureRange.setValue(signatureText);
+  signatureRange.setBackground(null); // Remove any existing fill color
+  signatureRange.setFontWeight("bold");
+  signatureRange.setHorizontalAlignment("center");
+  signatureRange.setVerticalAlignment("middle");
+  signatureRange.setFontSize(12);
+
+  // Add digital signature to column D starting from row 24
+  var signatureRange24 = inputSheet.getRange(24, 4, 1, 1);
+  signatureRange24.setValue(signatureText);
+  signatureRange24.setBackground(null); // Remove any existing fill color
+  signatureRange24.setFontWeight("bold");
+  signatureRange24.setHorizontalAlignment("center");
+  signatureRange24.setVerticalAlignment("middle");
+  signatureRange24.setFontSize(12);
+}
