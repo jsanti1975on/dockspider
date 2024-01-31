@@ -45,7 +45,7 @@ function jasCalculateAggregateAverages() {
     var hValue = inputSheet.getRange(row, 8).getValue(); // Value in column H
 
     // Check for discrepancy
-    if ((cValue * eValue) / fValue !== hValue) {
+    if (((cValue * hValue) / cValue) !== fValue) {
       // Discrepancy found, fill cell in column I with red
       inputSheet.getRange(row, 9).setBackground('#FF0000'); // Red fill color
     } else {
