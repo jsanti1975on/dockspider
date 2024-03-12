@@ -1,0 +1,43 @@
+Sub ExtractRentalData()
+    Dim wsSource As Worksheet
+    Dim wsRentals As Worksheet
+    Dim lastRow As Long, targetRow As Long
+    Dim cellValue As String
+    
+    ' Set the source and target worksheets
+    Set wsSource = ThisWorkbook.Sheets("Sheet1") ' Change "Sheet1" to your source sheet name
+    Set wsRentals = ThisWorkbook.Sheets("rentals")
+    
+    ' Find the last row with data in Column F of the source sheet
+    lastRow = wsSource.Cells(wsSource.Rows.Count, "F").End(xlUp).Row
+    
+    ' Initialize the target row in the "rentals" sheet
+    targetRow = 1
+    
+    ' Loop through each cell in Column F
+    For i = 1 To lastRow
+        ' Get the value in the current cell in Column F
+        cellValue = Trim(wsSource.Cells(i, 6).Value) ' Column F is represented by index 6
+        
+        ' Check if the cell contains the text "rental"
+        If InStr(1, cellValue, "rental", vbTextCompare) > 0 Then
+            ' Copy the entire row to the "rentals" sheet
+            wsSource.Rows(i).Copy Destination:=wsRentals.Rows(targetRow)
+            
+            ' Increment the target row for the next data entry in "rentals"
+            targetRow = targetRow + 1
+        End If
+    Next i
+    
+    ' Inform the user that the extraction is complete
+    MsgBox "Rental data extraction complete!", vbInformation
+End Sub
+
+REM If InStr(1, cellValue, "rental", vbTextCompare) > 0 _
+REM  And InStr(1, cellValue, "Pavilion Date needed mm/dd/year", vbTextCompare) > 0 Then
+REM Copy the entire row to the "rentals" sheet
+REM wsSource.Rows(i).Copy Destination:=wsRentals.Rows(targetRow)
+    
+REM Increment the target row for the next data entry in "rentals"
+REM targetRow = targetRow + 1
+REM End If
