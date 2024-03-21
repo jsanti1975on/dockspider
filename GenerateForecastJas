@@ -1,0 +1,58 @@
+'non dynamic
+Sub GenerateForecastJas()
+    Dim wsInput As Worksheet
+    Dim wsOutput As Worksheet
+    Dim lastRowInput As Long
+    Dim currentRow As Long
+    Dim currentOutputRow As Long
+    Dim currentOutputSheet As Integer
+    Dim currentYear As Integer
+    Dim currentClothing As String
+    Dim currentSaleDate As Date
+    Dim currentSaleTime As String
+    
+    ' Set the input worksheet
+    Set wsInput = ThisWorkbook.Sheets("input")
+    
+    ' Find the last row in the input sheet
+    lastRowInput = wsInput.Cells(wsInput.Rows.Count, "A").End(xlUp).Row
+    
+    ' Initialize variables
+    currentOutputRow = 2 ' Assuming headers in output sheet
+    currentOutputSheet = 1
+    currentYear = Year(wsInput.Cells(2, 1).Value) ' Assuming data starts from row 2
+    
+    ' Loop through each row in the input sheet
+    For currentRow = 2 To lastRowInput
+        ' Check if the year changes
+        If Year(wsInput.Cells(currentRow, 1).Value) <> currentYear Then
+            ' Move to next output sheet
+            currentOutputSheet = currentOutputSheet + 1
+            currentYear = Year(wsInput.Cells(currentRow, 1).Value)
+            currentOutputRow = 2 ' Reset output row
+        End If
+        
+        ' Check if the department is "CLOTHING"
+        If wsInput.Cells(currentRow, "N").Value = "CLOTHING" Then
+            ' Get the clothing, sale date, and sale time
+            currentClothing = wsInput.Cells(currentRow, "N").Value
+            currentSaleDate = wsInput.Cells(currentRow, "A").Value
+            currentSaleTime = wsInput.Cells(currentRow, "B").Value
+            
+            ' Set the output worksheet for current year
+            Set wsOutput = ThisWorkbook.Sheets("output" & currentOutputSheet)
+            
+            ' Write data to output sheet
+            With wsOutput
+                .Cells(currentOutputRow, 1).Value = currentClothing
+                .Cells(currentOutputRow, 2).Value = currentSaleDate
+                .Cells(currentOutputRow, 3).Value = currentSaleTime
+            End With
+            
+            ' Increment output row
+            currentOutputRow = currentOutputRow + 1
+        End If
+    Next currentRow
+    
+    MsgBox "Output sheets generated successfully!"
+End Sub
