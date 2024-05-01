@@ -29,6 +29,5 @@ Sub AircraftRev1()
     ' Release object reference
     Set wDoc = Nothing
     Set wordApp = Nothing
-        
-    
+           
 End Sub
