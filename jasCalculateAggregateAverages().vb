@@ -5,7 +5,7 @@ Sub jasCalculateAggregateAverages()
     Dim outputData As Variant
     Dim skuData As Object
     Dim i As Long, j As Long
-    Dim sku As String
+    Dim sku As Variant ' Declare sku as Variant to work with For Each
     Dim qty As Double, cost As Double, totalFormulaResult As Double
     Dim avgCost As Double
     Dim row As Long
@@ -77,4 +77,7 @@ Sub jasCalculateAggregateAverages()
             inputSheet.Cells(row, 9).Interior.Color = RGB(0, 255, 0) ' Green fill color
         End If
     Next row
+
+    ' Display message box to inform user of completion
+    MsgBox "The process is complete.", vbInformation
 End Sub
