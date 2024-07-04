@@ -1,0 +1,31 @@
+Sub SumPumpData()
+    Dim ws As Worksheet
+    Set ws = ThisWorkbook.Sheets("Sheet1") ' Adjust the sheet name as necessary
+
+    Dim lastRow As Long
+    lastRow = ws.Cells(ws.Rows.Count, "D").End(xlUp).Row
+
+    Dim pump1Total As Double
+    Dim pump2Total As Double
+    Dim pump3Total As Double
+    Dim pump4Total As Double
+
+    Dim i As Long
+    For i = 2 To lastRow
+        Select Case ws.Cells(i, "D").Value
+            Case "Pump1"
+                pump1Total = pump1Total + ws.Cells(i, "F").Value
+            Case "Pump2"
+                pump2Total = pump2Total + ws.Cells(i, "F").Value
+            Case "Pump3"
+                pump3Total = pump3Total + ws.Cells(i, "F").Value
+            Case "Pump4"
+                pump4Total = pump4Total + ws.Cells(i, "F").Value
+        End Select
+    Next i
+
+    ws.Range("M2").Value = pump1Total
+    ws.Range("N2").Value = pump2Total
+    ws.Range("O2").Value = pump3Total
+    ws.Range("P2").Value = pump4Total
+End Sub
